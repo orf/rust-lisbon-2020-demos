@@ -11,6 +11,12 @@ npm install
 npm start
 ```
 
+And to run the backend:
+
+```sh
+cargo run -p backend
+```
+
 ## How to build in release mode
 
 ```sh
