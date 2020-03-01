@@ -1,22 +1,43 @@
-use wasm_bindgen::prelude::*;
+use seed::{*, prelude::*};
 
 #[global_allocator]
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
-// This is like the `main` function, except for JavaScript.
+#[derive(Default)]
+struct Model {
+    count: i32,
+}
+
+#[derive(Clone)]
+enum Msg {
+    Increment,
+    Decrement,
+}
+
+fn update(msg: Msg, model: &mut Model, _orders: &mut impl Orders<Msg>) {
+    match msg {
+        Msg::Increment => model.count += 1,
+        Msg::Decrement => model.count -= 1,
+    }
+}
+
+
+fn view(model: &Model) -> impl View<Msg> {
+    let plural = if model.count == 1 {""} else {"s"};
+
+    div![
+        h1![ "The Grand Total" ],
+        div![
+            h3![ format!("{} click{} so far", model.count, plural) ],
+            button![ simple_ev(Ev::Click, Msg::Increment), "+" ],
+            button![ simple_ev(Ev::Click, Msg::Decrement), "-" ],
+        ],
+    ]
+}
+
+
 #[wasm_bindgen(start)]
-pub fn main_js() -> Result<(), JsValue> {
-    #[cfg(debug_assertions)]
-    console_error_panic_hook::set_once();
-
-    let window = web_sys::window().expect("no global `window` exists");
-    let document = window.document().expect("should have a document on window");
-    let body = document.body().expect("document should have a body");
-
-    let p : web_sys::Node = document.create_element("p")?.into();
-    p.set_text_content(Some("Hello from Rust, WebAssembly, and Webpack!"));
-
-    body.append_child(&p)?;
-
-    Ok(())
+pub fn render() {
+    App::builder(update, view)
+        .build_and_start();
 }
