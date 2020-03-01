@@ -1,0 +1,10 @@
+[package]
+name = "backend"
+version = "0.0.1"
+edition = "2018"
+
+[dependencies]
+shared = { path = "../shared/" }
+rand = "0.7.3"
+actix-web = "2"
+actix-rt = "1"

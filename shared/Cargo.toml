@@ -1,0 +1,6 @@
+[package]
+name = "shared"
+version = "0.0.1"
+
+[dependencies]
+serde = "1.0.104"

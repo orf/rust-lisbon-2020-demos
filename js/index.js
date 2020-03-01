@@ -1,1 +1,1 @@
-import("../pkg/index.js").catch(console.error);
+import("../frontend/pkg/index.js").catch(console.error);
