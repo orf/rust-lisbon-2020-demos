@@ -2,9 +2,6 @@ use seed::{prelude::*, *};
 use shared::RandomResponse;
 use seed::browser::service::fetch::FailReason;
 
-#[global_allocator]
-static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
-
 #[derive(Default)]
 struct Model {
     response: Option<seed::fetch::ResponseDataResult<RandomResponse>>,
