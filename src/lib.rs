@@ -5,9 +5,6 @@ use seed::{
 };
 use serde::{Deserialize, Serialize};
 
-#[global_allocator]
-static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
-
 const STORAGE_KEY: &str = "lisbon-rust";
 
 #[derive(Default, Deserialize, Serialize)]
