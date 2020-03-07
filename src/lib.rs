@@ -1,20 +1,11 @@
-use seed::{
-    browser::service::storage::{self, Storage},
-    prelude::*,
-    *,
-};
+use seed::{browser::service::storage, prelude::*, *};
 use serde::{Deserialize, Serialize};
 
 const STORAGE_KEY: &str = "lisbon-rust";
 
 #[derive(Default, Deserialize, Serialize)]
-struct Counter {
-    count: i32,
-}
-
 struct Model {
-    counter: Counter,
-    local_storage: Storage,
+    count: i32,
 }
 
 #[derive(Clone)]
@@ -25,20 +16,20 @@ enum Msg {
 
 fn update(msg: Msg, model: &mut Model, _orders: &mut impl Orders<Msg>) {
     match msg {
-        Msg::Increment => model.counter.count += 1,
-        Msg::Decrement => model.counter.count -= 1,
+        Msg::Increment => model.count += 1,
+        Msg::Decrement => model.count -= 1,
     }
-    storage::store_data(&model.local_storage, STORAGE_KEY, &model.counter);
-
+    let storage = storage::get_storage().expect("get localstorage");
+    storage::store_data(&storage, STORAGE_KEY, &model);
 }
 
 fn view(model: &Model) -> impl View<Msg> {
-    let plural = if model.counter.count == 1 { "" } else { "s" };
+    let plural = if model.count == 1 { "" } else { "s" };
 
     div![
         h1!["The Grand Total"],
         div![
-            h3![format!("{} click{} so far", model.counter.count, plural)],
+            h3![format!("{} click{} so far", model.count, plural)],
             button![simple_ev(Ev::Click, Msg::Increment), "+"],
             button![simple_ev(Ev::Click, Msg::Decrement), "-"],
         ],
@@ -49,10 +40,7 @@ fn after_mount(_: Url, _: &mut impl Orders<Msg>) -> AfterMount<Model> {
     let local_storage = storage::get_storage().expect("get `LocalStorage`");
     let counter = storage::load_data(&local_storage, STORAGE_KEY).unwrap_or_default();
 
-    AfterMount::new(Model {
-        local_storage,
-        counter
-    })
+    AfterMount::new(counter)
 }
 
 #[wasm_bindgen(start)]
