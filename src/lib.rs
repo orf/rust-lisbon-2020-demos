@@ -1,8 +1,5 @@
 use seed::{*, prelude::*};
 
-#[global_allocator]
-static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
-
 #[derive(Default)]
 struct Model {
     count: i32,
