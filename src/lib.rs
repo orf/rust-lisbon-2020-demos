@@ -19,12 +19,10 @@ fn update(msg: Msg, model: &mut Model, _orders: &mut impl Orders<Msg>) {
 }
 
 fn view(model: &Model) -> impl View<Msg> {
-    let plural = if model.count == 1 { "" } else { "s" };
-
     div![
         h1!["The Grand Total"],
         div![
-            h3![format!("{} click{} so far", model.count, plural)],
+            h3![format!("Click count: {}", model.count)],
             button![simple_ev(Ev::Click, Msg::Increment), "+"],
             button![simple_ev(Ev::Click, Msg::Decrement), "-"],
         ],
