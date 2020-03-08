@@ -10,7 +10,7 @@ pub fn main_js() -> Result<(), JsValue> {
     let document = window.document().expect("should have a document on window");
     let body = document.body().expect("document should have a body");
 
-    let p : web_sys::Node = document.create_element("p")?.into();
+    let p: web_sys::Node = document.create_element("p")?.into();
     p.set_text_content(Some("Hello from Rust, WebAssembly, and Webpack!"));
 
     body.append_child(&p)?;
