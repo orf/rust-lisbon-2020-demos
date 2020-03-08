@@ -14,13 +14,11 @@ enum Msg {
     Decrement,
 }
 
-fn update(msg: Msg, model: &mut Model, _orders: &mut impl Orders<Msg>) {
-    match msg {
-        Msg::Increment => model.count += 1,
-        Msg::Decrement => model.count -= 1,
-    }
-    let storage = storage::get_storage().expect("get localstorage");
-    storage::store_data(&storage, STORAGE_KEY, &model);
+fn after_mount(_: Url, _: &mut impl Orders<Msg>) -> AfterMount<Model> {
+    let local_storage = storage::get_storage().expect("get `LocalStorage`");
+    let counter = storage::load_data(&local_storage, STORAGE_KEY).unwrap_or_default();
+
+    AfterMount::new(counter)
 }
 
 fn view(model: &Model) -> impl View<Msg> {
@@ -34,11 +32,13 @@ fn view(model: &Model) -> impl View<Msg> {
     ]
 }
 
-fn after_mount(_: Url, _: &mut impl Orders<Msg>) -> AfterMount<Model> {
-    let local_storage = storage::get_storage().expect("get `LocalStorage`");
-    let counter = storage::load_data(&local_storage, STORAGE_KEY).unwrap_or_default();
-
-    AfterMount::new(counter)
+fn update(msg: Msg, model: &mut Model, _orders: &mut impl Orders<Msg>) {
+    match msg {
+        Msg::Increment => model.count += 1,
+        Msg::Decrement => model.count -= 1,
+    }
+    let storage = storage::get_storage().expect("get localstorage");
+    storage::store_data(&storage, STORAGE_KEY, &model);
 }
 
 #[wasm_bindgen(start)]
