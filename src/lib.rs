@@ -11,13 +11,6 @@ enum Msg {
     Decrement,
 }
 
-fn update(msg: Msg, model: &mut Model, _orders: &mut impl Orders<Msg>) {
-    match msg {
-        Msg::Increment => model.count += 1,
-        Msg::Decrement => model.count -= 1,
-    }
-}
-
 fn view(model: &Model) -> impl View<Msg> {
     div![
         h1!["The Grand Total"],
@@ -27,6 +20,13 @@ fn view(model: &Model) -> impl View<Msg> {
             button![simple_ev(Ev::Click, Msg::Decrement), "-"],
         ],
     ]
+}
+
+fn update(msg: Msg, model: &mut Model, _orders: &mut impl Orders<Msg>) {
+    match msg {
+        Msg::Increment => model.count += 1,
+        Msg::Decrement => model.count -= 1,
+    }
 }
 
 #[wasm_bindgen(start)]
