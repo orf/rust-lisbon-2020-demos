@@ -1,6 +1,6 @@
+use seed::browser::service::fetch::FailReason;
 use seed::{prelude::*, *};
 use shared::RandomResponse;
-use seed::browser::service::fetch::FailReason;
 
 #[derive(Default)]
 struct Model {
@@ -34,22 +34,17 @@ fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
 
 fn view(model: &Model) -> impl View<Msg> {
     let result = match &model.response {
-        Some(Ok(e)) => {
-            div![format!("Random Number: {}", e.number)]
-        }
-        Some(Err(e)) => {
-            div![format!("Error fetching: {:?}", e)]
-        },
-        None => {
-            div!["Press the button to generate a random number."]
-        }
+        Some(Ok(e)) => div![format!("Random Number: {}", e.number)],
+        Some(Err(e)) => div![format!("Error fetching: {:?}", e)],
+        None => div!["Press the button to generate a random number."],
     };
     div![
         h1!["Secure Random Number Generator"],
         result,
-        div![
-            button![simple_ev(Ev::Click, Msg::StartFetching), "Generate Random Number"],
-        ],
+        div![button![
+            simple_ev(Ev::Click, Msg::StartFetching),
+            "Generate Random Number"
+        ],],
     ]
 }
 
