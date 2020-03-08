@@ -23,7 +23,6 @@ module.exports = {
 
     new WasmPackPlugin({
       crateDirectory: path.resolve(__dirname, "frontend"),
-      extraArgs: "--out-name index"
     }),
   ]
 };
